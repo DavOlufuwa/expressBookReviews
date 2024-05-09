@@ -6,25 +6,52 @@ const public_users = express.Router();
 
 public_users.post("/register", (req, res) => {
   //Write your code here
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ message: "Please provide username and password" });
+  } else {
+    if (isValid(username)) {
+      users.push({ username, password });
+      return res.status(200).json({ message: "User registered successfully." });
+    } else {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+  }
 });
 
 // Get the book list available in the shop
 public_users.get("/", function (req, res) {
   //Write your code here
-  res.send(JSON.stringify(books, null, 4));
+  new Promise((resolve, reject) => {
+    resolve(books);
+  }).then((listOfBooks) => {
+    res.send(JSON.stringify(listOfBooks, null, 4));
+  });
 });
 
 // Get book details based on ISBN
 public_users.get("/isbn/:isbn", function (req, res) {
   //Write your code here
   const { isbn } = req.params;
-  const bookToGet = books[isbn];
 
-  if (bookToGet) {
-    res.send(bookToGet);
-  } else {
-    res.status(400).send("Unable to get book, isbn not found");
-  }
+  new Promise((resolve, reject) => {
+    const bookToGet = books[isbn];
+
+    if (bookToGet) {
+      resolve(bookToGet);
+    } else {
+      reject("Unable to get book, ISBN not found");
+    }
+  })
+    .then((book) => {
+      res.send(book);
+    })
+    .catch((error) => {
+      res.status(400).send(error);
+    });
 });
 
 // Get book details based on author
