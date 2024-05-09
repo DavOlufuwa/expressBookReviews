@@ -59,19 +59,25 @@ public_users.get("/author/:author", function (req, res) {
   //Write your code here
   const { author } = req.params;
 
-  let foundBooks = [];
-
-  for (let key in books) {
-    if (books[key].author.toLowerCase().includes(author.toLowerCase())) {
-      foundBooks.push(books[key]);
+  new Promise((resolve, reject) => {
+    let foundBooks = [];
+    for (let key in books) {
+      if (books[key].author.toLowerCase().includes(author.toLowerCase())) {
+        foundBooks.push(books[key]);
+      }
     }
-  }
-
-  if (foundBooks.length > 0) {
-    res.send(foundBooks);
-  } else {
-    res.status(400).send("Unable to get book, author not found");
-  }
+    if (foundBooks.length > 0) {
+      resolve(foundBooks);
+    } else {
+      reject("Unable to get book, author not found");
+    }
+  })
+    .then((booksByAuthor) => {
+      res.send(booksByAuthor);
+    })
+    .catch((error) => {
+      res.status(400).send(error);
+    });
 });
 
 // Get all books based on title
@@ -79,19 +85,26 @@ public_users.get("/title/:title", function (req, res) {
   //Write your code here
   const { title } = req.params;
 
-  let foundBooks = [];
-
-  for (let key in books) {
-    if (books[key].title.toLowerCase().includes(title.toLowerCase())) {
-      foundBooks.push(books[key]);
+  new Promise((resolve, reject) => {
+    let foundBooks = [];
+    for (let key in books) {
+      if (books[key].title.toLowerCase().includes(title.toLowerCase())) {
+        foundBooks.push(books[key]);
+      }
     }
-  }
 
-  if (foundBooks.length > 0) {
-    res.send(foundBooks);
-  } else {
-    res.status(400).send("Unable to get book, title not found");
-  }
+    if (foundBooks.length > 0) {
+      resolve(foundBooks);
+    } else {
+      reject("Unable to get book, title not found");
+    }
+})
+  .then((booksByTitle) => {
+    res.send(booksByTitle);
+  })
+  .catch((error) => {
+    res.status(400).send(error);
+  });
 });
 
 //  Get book review
