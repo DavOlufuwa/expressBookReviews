@@ -22,19 +22,20 @@ public_users.post("/register", (req, res) => {
   }
 });
 
-// Get the book list available in the shop
+
 public_users.get("/", function (req, res) {
-  //Write your code here
+
   new Promise((resolve, reject) => {
     resolve(books);
-  }).then((listOfBooks) => {
+  })
+  .then((listOfBooks) => {
     res.send(JSON.stringify(listOfBooks, null, 4));
   });
 });
 
-// Get book details based on ISBN
+
 public_users.get("/isbn/:isbn", function (req, res) {
-  //Write your code here
+
   const { isbn } = req.params;
 
   new Promise((resolve, reject) => {
@@ -46,17 +47,17 @@ public_users.get("/isbn/:isbn", function (req, res) {
       reject("Unable to get book, ISBN not found");
     }
   })
-    .then((book) => {
-      res.send(book);
-    })
-    .catch((error) => {
-      res.status(400).send(error);
-    });
+  .then((book) => {
+    res.send(book);
+  })
+  .catch((error) => {
+    res.status(400).send(error);
+  });
 });
 
-// Get book details based on author
+
 public_users.get("/author/:author", function (req, res) {
-  //Write your code here
+
   const { author } = req.params;
 
   new Promise((resolve, reject) => {
@@ -72,12 +73,13 @@ public_users.get("/author/:author", function (req, res) {
       reject("Unable to get book, author not found");
     }
   })
-    .then((booksByAuthor) => {
-      res.send(booksByAuthor);
-    })
-    .catch((error) => {
-      res.status(400).send(error);
-    });
+  .then((booksByAuthor) => {
+    res.send(booksByAuthor);
+  })
+  .catch((error) => {
+    res.status(400).send(error);
+  });
+
 });
 
 // Get all books based on title
@@ -98,7 +100,7 @@ public_users.get("/title/:title", function (req, res) {
     } else {
       reject("Unable to get book, title not found");
     }
-})
+  })
   .then((booksByTitle) => {
     res.send(booksByTitle);
   })
