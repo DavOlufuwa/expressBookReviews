@@ -20,8 +20,6 @@ const isValid = (username) => {
 };
 
 const authenticatedUser = (username, password) => {
-  //returns boolean
-  //write code to check if username and password match the one we have in records.
 
   let usersWithValidCredentials = users.filter((user) => {
     return user.username === username && user.password === password;
@@ -36,7 +34,7 @@ const authenticatedUser = (username, password) => {
 
 //only registered users can login
 regd_users.post("/login", (req, res) => {
-  //Write your code here
+
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -97,7 +95,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
   } else {
     if (books[isbn].reviews[req.user.username]) {
       delete books[isbn].reviews[req.user.username];
-      return res.status(200).json({ message: "Review deleted successfully" });
+      return res.status(200).json({ message: `Review for ${books[isbn].title} deleted successfully` });
     } else {
       return res.status(400).json({ message: "Review not found" });
     }
